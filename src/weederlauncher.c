@@ -296,14 +296,14 @@ void print_usage(const char *progname)
 void check_8mer_freqfile_exists()
 {
   char filename[200];
-  sprintf(filename, FORMAT_8MER_FREQ_FILE, organism);
+  sprintf(filename, FORMAT_8MER_FREQ_FILE, "FreqFiles", organism);
   check_file_exists(filename, "\nMissing frequency file : %s\n");
 }
 
 void check_6mer_freqfile_exists()
 {
   char filename[200];
-  sprintf(filename, FORMAT_6MER_FREQ_FILE, organism);
+  sprintf(filename, FORMAT_6MER_FREQ_FILE, "FreqFiles", organism);
   check_file_exists(filename, "\nMissing frequency file : %s\n");
 }
 
