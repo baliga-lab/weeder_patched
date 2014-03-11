@@ -32,15 +32,13 @@ through it --ffdir option
 
 #### Cleanup of code
 
-  - eliminated majority of copy-paste code
-  - generalized repetitive code into functions
+  - generalized redundant code into functions
   - generalized linked list mergesort
   - renamed variables
   - removed unused code and variables
   - replaced magic numbers with symbolic constants
-  - added makefile
+  - translated most variables to english
   - code now compiles with significantly stricter settings and ISO C90
-    without warnings
 
 #### Optimizations
 
