@@ -4,6 +4,10 @@
 
 This is a refactored version of Weeder 1.4.2
 
+Find the original version here:
+
+http://159.149.160.51/modtools/downloads/weeder.html
+
 ## Compiling and Installation
 
 make
