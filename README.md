@@ -10,7 +10,7 @@ http://159.149.160.51/modtools/downloads/weeder.html
 
 ## Compiling and Installation
 
-make
+see INSTALL for compilation instructions
 
 This will build the executables
 
@@ -18,10 +18,6 @@ weederlauncher
 weederTFBS
 adviser
 locator
-
-For running the unit tests, type
-
-make test
 
 ## Remarks
 
@@ -35,6 +31,7 @@ through it --ffdir option
 ### Refactored weeder:
 
 #### Cleanup of code
+
   - eliminated majority of copy-paste code
   - generalized repetitive code into functions
   - generalized linked list mergesort
@@ -46,6 +43,7 @@ through it --ffdir option
     without warnings
 
 #### Optimizations
+
   - all base-4 power computations are replaced with a
     symbolic constant or a specialized base 4 power 4 function
   - replaced majority of malloc() based allocations with
@@ -53,9 +51,12 @@ through it --ffdir option
     on the 12mer computation
 
 #### Bug fixes
+
   - hamming distance
 
-#### Customizations
+#### Enhancements/Customizations
+
+  - Build with autotools
   - MAX_SEQ and executable names can be changed in one central place
     in the makefile
   - Location of FreqFiles can be specified for weederTFBS
