@@ -23,6 +23,12 @@ For running the unit tests, type
 
 make test
 
+## Remarks
+
+The directory python contains re-implementations of adviser and weederlauncher
+in Python.
+weederlauncher.py provides an way to define the location of the FreqFiles directory
+through it --ffdir option
 
 ## Modifications
 
@@ -52,7 +58,7 @@ make test
 #### Customizations
   - MAX_SEQ and executable names can be changed in one central place
     in the makefile
-
+  - Location of FreqFiles can be specified for weederTFBS
 
 ## Open Questions
   - hamming distance

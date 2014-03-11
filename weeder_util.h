@@ -23,8 +23,8 @@
 #define FORMAT_LOCATOR_WEE_FILE       "%s.%s.wee"
 #define FORMAT_LOCATOR_HTML_FILE      "%s.%s.html"
 
-#define FORMAT_8MER_FREQ_FILE "./FreqFiles/%s.8.freq"
-#define FORMAT_6MER_FREQ_FILE "./FreqFiles/%s.6.freq"
+#define FORMAT_8MER_FREQ_FILE "%s/%s.8.freq"
+#define FORMAT_6MER_FREQ_FILE "%s/%s.6.freq"
 
 typedef int BOOL;
 #define TRUE  1

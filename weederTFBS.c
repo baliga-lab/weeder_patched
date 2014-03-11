@@ -26,6 +26,10 @@
 
 #define DEFAULT_MAX_RESULTS    10
 #define SEQUENCE_NAME_LENGTH   20
+#define MAX_PATH_LEN 300
+#define MAX_FILENAME_LEN 128
+#define MAX_ORGCODE_LEN 80
+
 typedef struct _pattern
 {
   /* base_node elements */
@@ -64,8 +68,9 @@ static time_t starttime;
 /* Options derived from command line arguments */
 static struct
 {
-  char infile[128];
-  char organism[80];
+  char infile[MAX_FILENAME_LEN];
+  char freqfile_dir[MAX_PATH_LEN];
+  char organism[MAX_ORGCODE_LEN];
   BOOL verbose, reversed, onlybestflag;
   int min_repeat_percentage, max_mismatches, motif_length, max_results;
 } options;
@@ -579,7 +584,7 @@ void readfreqs(void)
   string_toupper(options.organism, options.organism);
 
   /* Read 8-mer freq file */
-  sprintf(freqfname, FORMAT_8MER_FREQ_FILE, options.organism);
+  sprintf(freqfname, FORMAT_8MER_FREQ_FILE, options.freqfile_dir, options.organism);
   freq_fp = fopen(freqfname, "r");
 
   if (freq_fp == NULL) {
@@ -611,7 +616,7 @@ void readfreqs(void)
   }
 
   /* Read 6-mer freq file  */
-  sprintf(freqfname, FORMAT_6MER_FREQ_FILE, options.organism);
+  sprintf(freqfname, FORMAT_6MER_FREQ_FILE, options.freqfile_dir, options.organism);
   freq_fp = fopen(freqfname, "r");
 
   if (freq_fp == NULL) {
@@ -1516,6 +1521,7 @@ void print_option_error(const char *progname)
         "-S: process both strands of input sequences (default: single strand)\n"
         "-M: multiple motif occurrences in each sequence (default: expect zero or one occurrences per sequence)\n"
         "-T <number>: report top <number> motifs\n"
+        "-F <directory>: path to Freqfiles\n"
         "-V: verbose mode\n", stderr);
 }
 
@@ -1546,6 +1552,10 @@ int parse_option(int argc, char *argv[], int option_index)
     check_condition(has_option_value(argc, argv, option_index),
                     "\nProblem in number of reported motifs definition\n", 1);
     options.max_results = atoi(argv[option_index + 1]);
+    option_index += 2;
+    break;
+  case 'F':
+    strncpy(options.freqfile_dir, argv[option_index + 1], MAX_PATH_LEN);
     option_index += 2;
     break;
   case 'e':
@@ -1712,6 +1722,7 @@ void init_options(void)
 {
   options.infile[0]   = '\0';
   options.organism[0] = '\0';
+  strcpy(options.freqfile_dir, "FreqFiles");
   options.verbose = options.reversed = FALSE;
   options.onlybestflag = TRUE;
   options.min_repeat_percentage = 2;

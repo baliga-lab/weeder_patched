@@ -31,7 +31,7 @@ def print_job_info(inputfile, analysis, orgcode, reverse):
 
 
 def run_weederTFBS(inputfile, logfile, orgcode, motif_len, num_mutations, max_results, allseqs,
-                   reverse, multi):
+                   reverse, multi, ffdir):
     seq_percentage = '100' if allseqs else '50'
     reverse_param = '-S' if reverse else '-N'
     multi_param = '-M' if multi else '-N'
@@ -43,6 +43,8 @@ def run_weederTFBS(inputfile, logfile, orgcode, motif_len, num_mutations, max_re
                '-e', str(num_mutations),
                multi_param, reverse_param,
                '-T', str(max_results)]
+    if ffdir:
+        command.extend(['-F', ffdir])
     proc = sp.Popen(command, stdout=logfile, stderr=logfile)
     return proc.wait()
 
@@ -53,53 +55,53 @@ def run_adviser(inputfile, logfile):
     return proc.wait()
 
 
-def run_small_analysis(inputfile, orgcode, max_results, reverse, multi, allseqs):
+def run_small_analysis(inputfile, orgcode, max_results, reverse, multi, allseqs, ffdir):
     print_job_info(inputfile, 'small', orgcode, reverse)
     with open('weeder.log', 'w') as logfile:
         run_weederTFBS(inputfile, logfile, orgcode, 6, 1, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_weederTFBS(inputfile, logfile, orgcode, 8, 2, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_adviser(inputfile, logfile)
 
 
-def run_medium_analysis(inputfile, orgcode, max_results, reverse, multi, allseqs):
+def run_medium_analysis(inputfile, orgcode, max_results, reverse, multi, allseqs, ffdir):
     print_job_info(inputfile, 'medium', orgcode, reverse)
     with open('weeder.log', 'w') as logfile:
         run_weederTFBS(inputfile, logfile, orgcode, 6, 1, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_weederTFBS(inputfile, logfile, orgcode, 8, 2, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_weederTFBS(inputfile, logfile, orgcode, 10, 3, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_adviser(inputfile, logfile)
 
 
-def run_large_analysis(inputfile, orgcode, max_results, reverse, multi, allseqs):
+def run_large_analysis(inputfile, orgcode, max_results, reverse, multi, allseqs, ffdir):
     print_job_info(inputfile, 'large', orgcode, reverse)
     with open('weeder.log', 'w') as logfile:
         run_weederTFBS(inputfile, logfile, orgcode, 6, 1, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_weederTFBS(inputfile, logfile, orgcode, 8, 2, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_weederTFBS(inputfile, logfile, orgcode, 10, 3, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_weederTFBS(inputfile, logfile, orgcode, 12, 4, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_adviser(inputfile, logfile)
 
 
-def run_extra_analysis(inputfile, orgcode, max_results, reverse, multi, allseqs):
+def run_extra_analysis(inputfile, orgcode, max_results, reverse, multi, allseqs, ffdir):
     print_job_info(inputfile, 'extra', orgcode, reverse)
     with open('weeder.log', 'w') as logfile:
         run_weederTFBS(inputfile, logfile, orgcode, 6, 1, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_weederTFBS(inputfile, logfile, orgcode, 8, 3, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_weederTFBS(inputfile, logfile, orgcode, 10, 4, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_weederTFBS(inputfile, logfile, orgcode, 12, 4, max_results, allseqs,
-                       reverse, multi)
+                       reverse, multi, ffdir)
         run_adviser(inputfile, logfile)
 
 
@@ -116,19 +118,20 @@ if __name__ == '__main__':
                         help='multiple motif occurrences (default: 0 or 1)')
     parser.add_argument('--topresults', type=int, default=DEFAULT_MAX_RESULTS,
                         help='number of results to report')
+    parser.add_argument('--ffdir', help='specify alternative FreqFiles directory')
     args = parser.parse_args()
 
     if args.analysis == 'small':
         run_small_analysis(args.input, args.orgcode, args.topresults,
-                           args.reverse, args.multi, args.allseqs)
+                           args.reverse, args.multi, args.allseqs, args.ffdir)
     elif args.analysis == 'medium':
         run_medium_analysis(args.input, args.orgcode, args.topresults,
-                            args.reverse, args.multi, args.allseqs)
+                            args.reverse, args.multi, args.allseqs, args.ffdir)
     elif args.analysis == 'large':
         run_large_analysis(args.input, args.orgcode, args.topresults,
-                           args.reverse, args.multi, args.allseqs)
+                           args.reverse, args.multi, args.allseqs, args.ffdir)
     elif args.analysis == 'extra':
         run_extra_analysis(args.input, args.orgcode, args.topresults,
-                           args.reverse, args.multi, args.allseqs)
+                           args.reverse, args.multi, args.allseqs, args.ffdir)
     else:
         print "Analysis type '%s' not supported" % args.analysis
