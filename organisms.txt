@@ -1,0 +1,21 @@
+Letter code		Organism
+HS			Homo sapiens
+HSI			Homo sapiens (intergenic frequencies)
+MM 			Mus musculus
+MMI			Mus musculus (intergenic frequencies)
+CFI			Canis familiaris (intergenic frequencies)
+RN			Rattus norvegicus
+DM			Drosophila melanogaster
+SC			S. cerevisiae
+FR			(Taki)Fugu rubripes
+DR			Danio rerio
+AT			Arabidopsis thaliana
+GG			Gallus gallus
+CE			C. elegans
+AG			Anopheles gambiae
+AN			A.nidulans
+CI			Ciona intestinalis
+XT			Xenopus tropicalis
+
+BEC			E.coli K12
+BBS			Bacillus subtilis

@@ -1,0 +1,6 @@
+*.o
+weederlauncher
+weederTFBS
+adviser
+locator
+weeder_util_test
