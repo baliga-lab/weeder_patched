@@ -5,10 +5,11 @@ ADVISER = adviser
 WEEDER_TFBS = weederTFBS
 WEEDERLAUNCHER = weederlauncher
 LOCATOR = locator
-STD_CFLAGS = -Wall -std=c89 -pedantic -O2 -Wshadow -Wpointer-arith \
+STD_CFLAGS = -Isrc -Wall -std=c89 -pedantic -O2 -Wshadow -Wpointer-arith \
 	-Wcast-qual -Wcast-align -Wwrite-strings \
 	-Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wno-long-long
 
+include_HEADERS = src/weeder_util.h test/CuTest.h
 
 bin_PROGRAMS = weederlauncher weederTFBS adviser locator
 
@@ -31,5 +32,5 @@ locator_LDADD = -lm
 check_PROGRAMS = $(TESTS)
 
 test_weeder_util_test_SOURCES = test/CuTest.c test/weeder_util_test.c src/weeder_util.c
-test_weeder_util_test_CFLAGS  = $(STD_CFLAGS) -Isrc
+test_weeder_util_test_CFLAGS  = $(STD_CFLAGS) -I../src
 test_weeder_util_test_LDADD = -lm
