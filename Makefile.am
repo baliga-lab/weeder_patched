@@ -1,4 +1,5 @@
 TESTS = test/weeder_util_test
+AUTOMAKE_OPTIONS = subdir-objects
 
 MAX_SEQ = 100000
 ADVISER = adviser
