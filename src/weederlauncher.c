@@ -13,14 +13,17 @@
 #include <strings.h>
 #include "weeder_util.h"
 
-#define DEFAULT_MAX_RESULTS 10
-#define WAIT_CHILD_EXIT     wait(NULL)
-#define MAX_PARAM_LENGTH    200 /* so we can easily process long paths */
-#define INPUT_PATH_LENGTH   200
+#define DEFAULT_MAX_RESULTS    10
+#define WAIT_CHILD_EXIT        wait(NULL)
+#define MAX_PARAM_LENGTH       300 /* so we can easily process long paths */
+#define INPUT_PATH_LENGTH      200
+#define FREQFILE_PATH_LENGTH   200
 
 static BOOL allflag = FALSE, reverseflag = FALSE, multiflag = FALSE;
 static char organism[8], analysis[80], inputfile[INPUT_PATH_LENGTH] = "";
 static int max_results = DEFAULT_MAX_RESULTS;
+
+static char freqfile_path[300] = "FreqFiles";
 
 void parse_option(const char *option);
 void run_small_analysis(void);
@@ -43,7 +46,7 @@ void create_mix_file(void);
 int main(int argc, char *argv[])
 {
   /*
-    LA LENGTH E' IL TIPO DI ANALISI  
+    LA LENGTH E' IL TIPO DI ANALISI
     IL 15 E' IL REVERSED (TRUE / FALSE)
     IL 17 E' IL TITOLO
   */
@@ -55,16 +58,16 @@ int main(int argc, char *argv[])
   strcpy(organism,  argv[2]);
   strcpy(analysis,  argv[3]);
 
+  if (argc >= 5) parse_option(argv[4]);
+  if (argc >= 6) parse_option(argv[5]);
+  if (argc >= 7) parse_option(argv[6]);
+  if (argc >= 8) parse_option(argv[7]);
+
   check_8mer_freqfile_exists();
   check_6mer_freqfile_exists();
   check_inputfile_exists();
 
   create_mix_file();
-
-  if (argc >= 5) parse_option(argv[4]);
-  if (argc >= 6) parse_option(argv[5]);
-  if (argc >= 7) parse_option(argv[6]);
-  if (argc >= 8) parse_option(argv[7]);
 
   if (max_results <= 0) {
     fprintf(stderr, "\nI need to report at least one motif per run!\n");
@@ -158,6 +161,9 @@ void run_weeder_tfbs(const char *arg0, const char *arg1, const char *arg2,
   strcpy(params[13], "-T");
   sprintf(params[14], "%d", max_results);
 
+  strcpy(params[15], "-F");
+  strncpy(params[16], freqfile_path, MAX_PARAM_LENGTH);
+
   /* specific parameters */
   strcpy(params[7],  arg0);
   strcpy(params[8],  arg1);
@@ -169,7 +175,7 @@ void run_weeder_tfbs(const char *arg0, const char *arg1, const char *arg2,
 
   if (reverseflag) strcpy(params[12], "-S");
   else strcpy(params[12], "-N");
-  params[15] = NULL;
+  params[17] = NULL;
   excflag = execvp(WEEDER_TFBS_CMD, params);
 
   if (excflag == -1)
@@ -277,6 +283,10 @@ void parse_option(const char *option)
     const char *num_str = &(option[1]);
     max_results = atoi(num_str);
   }
+  if (option[0] == 'F') {
+    const char *freq_path_str = &(option[1]);
+    strncpy(freqfile_path, freq_path_str, FREQFILE_PATH_LENGTH);
+  }
 }
 
 void print_usage(const char *progname)
@@ -290,20 +300,22 @@ void print_usage(const char *progname)
           "A: all sequences must contain the motif (default: half)\n"
           "S: process both strands of input sequences (default: single strand)\n"
           "M: multiple motif occurrences in each sequence (default: expect zero or one occurrences per sequence)\n"
-          "T<number>: report top <number> motifs of each run\n", progname);
+          "T<number>: report top <number> motifs of each run\n"
+          "F<path>: freqfile path\n",
+          progname);
 }
 
 void check_8mer_freqfile_exists()
 {
   char filename[200];
-  sprintf(filename, FORMAT_8MER_FREQ_FILE, "FreqFiles", organism);
+  sprintf(filename, FORMAT_8MER_FREQ_FILE, freqfile_path, organism);
   check_file_exists(filename, "\nMissing frequency file : %s\n");
 }
 
 void check_6mer_freqfile_exists()
 {
   char filename[200];
-  sprintf(filename, FORMAT_6MER_FREQ_FILE, "FreqFiles", organism);
+  sprintf(filename, FORMAT_6MER_FREQ_FILE, freqfile_path, organism);
   check_file_exists(filename, "\nMissing frequency file : %s\n");
 }
 

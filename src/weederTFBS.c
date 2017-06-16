@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
   char mixfile[OUTFILE_MAX_NAME_LENGTH]    = "";
   char htmlfile[OUTFILE_MAX_NAME_LENGTH] = "";
   FILE *wee_fp, *mix_fp, *html_fp;
- 
+
   if (argc < 4) {
     print_usage(argv[0]);
     exit(1);
@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
 
   for (arg_index = 0; arg_index < argc; arg_index++) {
     fprintf(wee_fp,  "%s ", argv[arg_index]);
-    fprintf(html_fp, "%s ", argv[arg_index]);  
+    fprintf(html_fp, "%s ", argv[arg_index]);
   }
 
   fprintf(wee_fp,  ")\n");
@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
     for (base_index = 0; base_index < sequence_lengths[seq_index]; base_index++) {
       buffers.sequence[seq_index][base_index] =
         toupper(buffers.sequence[seq_index][base_index]);
-      
+
       if (!isvalid(buffers.sequence[seq_index][base_index])) {
         int used_base_index;
 
@@ -243,7 +243,7 @@ int main(int argc, char *argv[])
 
 	      seekpat->next = head_node.next;
 	      head_node.next = seekpat;
-        
+
 	      seekpat = &head_node;
 	      myscore = 0.0;
 
@@ -572,7 +572,7 @@ void readfreqs(void)
     i1, i2, i3, i4, i5, i6, i7, i8;
   double backfreqpre, backfreqpost, decfreq, prefreq, postfreq,
     totalcountsix, totalcounteight, checksum = 0, decsum = 0;
-  char freqfname[40] = "", decamer[10];
+  char freqfname[400] = "", decamer[10];
   FILE *freq_fp;
 
   if (options.verbose) fprintf(stderr, "\nComputing frequencies...\n");
