@@ -321,7 +321,7 @@ void check_6mer_freqfile_exists()
 
 void check_inputfile_exists()
 {
-  check_file_exists(inputfile, "\nweederluncher: No such file : %s\n");
+  check_file_exists(inputfile, "\nweederlauncher: No such file : %s\n");
 }
 
 void create_mix_file()
